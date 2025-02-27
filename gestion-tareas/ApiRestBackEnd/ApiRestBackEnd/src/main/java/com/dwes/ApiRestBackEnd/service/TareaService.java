@@ -38,14 +38,23 @@ public class TareaService {
         if (tarea.isCompletada()){
             tareaMod.setCompletada(tarea.isCompletada());
         }
-        return tareaRepository.save(tarea);
+        return tareaRepository.save(tareaMod);
     }
+    @Transactional
     public void deleteTareaById(long id){
         Optional<Tarea> tareaOptional = tareaRepository.findById(id);
         if (!tareaOptional.isPresent()){
             throw new RuntimeException("No existe esa tarea");
         }
         tareaRepository.deleteById(id);
+    }
+    @Transactional(readOnly = true)
+    public List<Tarea> listTareaCompletada(){
+        return tareaRepository.obtenerTareasCompletadas();
+    }
+    @Transactional(readOnly = true)
+    public List<Tarea> listTareaNoCompletada(){
+        return tareaRepository.obtenerTareasNoCompletadas();
     }
 }
 

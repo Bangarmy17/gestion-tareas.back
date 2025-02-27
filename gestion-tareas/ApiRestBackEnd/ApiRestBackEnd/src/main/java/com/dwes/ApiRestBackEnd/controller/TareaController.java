@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 @RequestMapping("/tareas")
 public class TareaController {
@@ -19,7 +19,7 @@ public class TareaController {
     }
 
     @PostMapping
-    public Tarea crearTarea(Tarea tarea){
+    public Tarea crearTarea(@RequestBody Tarea tarea){
         return tareaService.saveTarea(tarea);
     }
     @GetMapping
@@ -27,7 +27,7 @@ public class TareaController {
         return tareaService.listAllTarea();
     }
     @PutMapping("/{id}")
-    public Tarea actualizarTareaPorId(Tarea tarea,@PathVariable Long id){
+    public Tarea actualizarTareaPorId(@RequestBody Tarea tarea,@PathVariable Long id){
         return tareaService.updateTareaById(tarea,id);
     }
     @DeleteMapping("/{id}")
@@ -38,5 +38,13 @@ public class TareaController {
         } catch (RuntimeException e){
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/completada")
+    public List<Tarea> mostrarTareasCompletadas(){
+        return tareaService.listTareaCompletada();
+    }
+    @GetMapping("/sinCompletar")
+    public List<Tarea> mostrarTareasNoCompletadas(){
+        return tareaService.listTareaNoCompletada();
     }
 }
